@@ -171,7 +171,7 @@ function sendMessageToTelegram()
 {
     local IP=$(curl -s https://ip.vinahost.vn || (hostname -I | awk '{print $1}'))
     local token_id="1126087523:AAG38a7Fm_ZJDey1LXFgdJZLH_WLYpUeWtk"
-    local group_id="-649404770"
+    local group_id="-604759080"
     # local group_id="-1291900277"
     local -r URL="https://api.telegram.org/bot$token_id/sendMessage"
 
