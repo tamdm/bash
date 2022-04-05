@@ -134,7 +134,7 @@ function get_sendalert()
 
 function get_crond()
 {	
-	echo -e "Set running 12h/time(Press 1) - ${PLAIN}Manual set (Press 2): "
+	echo -e "Set running 12h/time(Press 1) - ${PLAIN}Set running 6h/time (Press 2): "
 	echo -e "Menu setup cronjob"
 	select opt in Opt_1 Opt_2 Exit; do
 	case $opt in 
