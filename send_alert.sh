@@ -171,21 +171,22 @@ function sendMessageToTelegram()
 {
     local IP=$(curl -s https://ip.vinahost.vn || (hostname -I | awk '{print $1}'))
     local token_id="1126087523:AAG38a7Fm_ZJDey1LXFgdJZLH_WLYpUeWtk"
-    local group_id="-604759080"
-    # local group_id="-1291900277"
+    local group_id="-649404770"
     local -r URL="https://api.telegram.org/bot$token_id/sendMessage"
 
     curl -s -X POST $URL -d chat_id=$group_id -d text="
 
-    Đây là tin nhắn khẩn cấp
+    ########### ALERT MESSAGE ###########
 
-    Vui lòng báo cho Admin hoặc Phòng network để kiểm tra !!!
-    
+    PLEASE CALL ADMIN OR NETWORK FOR CHECK !!!
+    ###################################### 
     IP Adress: "${IP}"
-    #########################################
+    ######################################
+    Thời gian: ${DATE}
+    ######################################
     $(echo "${1}")
-    #########################################
-    Thời gian: ${DATE}" > /dev/null
+    ######################################" > /dev/null
+
 }
 function formatData() 
 {
@@ -300,6 +301,6 @@ function main()
     formatData
     checkProblemDisk
     CheckRaid
-    cd "${HOME_FOLDER}" && rm -f sd* report
+    cd "${HOME_FOLDER}" && rm -f sd* report raid &>/dev/null
 }
 main "${@}"
