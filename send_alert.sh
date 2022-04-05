@@ -289,6 +289,7 @@ then
     sendAlert "${install_folder}" "${DATE}" "${IP}" "${MESSAGE}"
     local content=$(cat "${HOME_FOLDER}/raid")
     sendMessageToTelegram "${content}"
+    cd "${HOME_FOLDER)" && rm -f sd* report
 fi
 }
 
