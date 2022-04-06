@@ -2,7 +2,7 @@
 
 # ---------------------------------------------------------------------------
 # install.sh - Bash shell script
-# Copyright 2012-2020, Tam Do Minh <dominhtam.94@gmail.com>
+# Copyright 2012-2020, Tam Do Minh <dominhtam.94@gmail.com> - Skype <dominhtam.94>
 
 # This program is free software: you can redistribute it and/or modify 
 # it under the terms of GNU General Public License as plblished by 
@@ -16,7 +16,7 @@
 # more details.
 
 # Revision history:
-# 2021-03-31	Created
+# 2022-03-31	Created
 # ---------------------------------------------------------------------------
 PROGNAME=${0##*/}
 VERSION="3.5"
