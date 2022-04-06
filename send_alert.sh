@@ -27,7 +27,7 @@ YELLOW='\033[0;33m'
 PLAIN='\033[0m'
 ORANGE='\033[38;5;202m'
 
-DATE=$(date '+%d-%B, %Y')
+DATE=$(date "+%T, %d-%B, %Y")
 HOME_FOLDER="/vinahost"
 Attribute=("HDD Device" "HDD Model" "Temperature" "Highest Temp" "Health" "Performance" "Est. lifetime" "Total written" "Bad sector")
 
