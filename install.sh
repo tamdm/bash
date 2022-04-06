@@ -111,7 +111,8 @@ function Menulist_updateOS()
 function get_hdsentinel()
 {
 	local -r HOME_FOLDER="/vinahost"
-	local -r URL="http://210.211.122.233/files/Checkdisk/hdsentinel-019c-x64"
+	#local -r URL="http://210.211.122.233/files/Checkdisk/hdsentinel-019c-x64"
+	local -r URL="https://github.com/tamdm/bash/raw/master/hdsentinel"
 	if [[ ! -f "${HOME_FOLDER}/hdsentinel" ]]
 	then
 		$( curl -m 5 -L ${URL} --output ${HOME_FOLDER}/hdsentinel && chmod +x ${HOME_FOLDER}/hdsentinel ) || echo -e "${RED}Error:${PLAIN} File hdsentinel-019c-x64 not found. Please manual check!"
