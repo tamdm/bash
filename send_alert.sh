@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # ---------------------------------------------------------------------------
-# install.sh - Bash shell script
+# send_alert.sh - Bash shell script
 # Copyright 2012-2020, Tam Do Minh <dominhtam.94@gmail.com> - Skype <dominhtam.94>
 
 # This program is free software: you can redistribute it and/or modify 
