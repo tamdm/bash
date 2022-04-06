@@ -158,7 +158,8 @@ Attribute=("HDD Device" "HDD Model" "Temperature" "Highest Temp" "Health" "Perfo
 
 function get_hdsentinel()
 {
-    local -r URL="http://210.211.122.233/files/Checkdisk/hdsentinel-019c-x64"
+    # local -r URL="http://210.211.122.233/files/Checkdisk/hdsentinel-019c-x64"
+    local -r URL="https://raw.githubusercontent.com/tamdm/bash/master/send_alert.sh"
     if [[ ! -f "${HOME_FOLDER}/hdsentinel" ]]
     then
         $( curl -m 5 -L ${URL} --output ${HOME_FOLDER}/hdsentinel && chmod +x "${HOME_FOLDER}/hdsentinel"  ) ||  (sendMessageToTelegram "Error:File hdsentinel-019c-x64 not found. Please manual check!" && exit 1)
