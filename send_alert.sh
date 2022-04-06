@@ -287,7 +287,7 @@ fi
 
 if [[ "${Raid_Failed}" == "true" ]]
 then
-    sendAlert "${install_folder}" "${DATE}" "${IP}" "${MESSAGE}"
+    #sendAlert "${install_folder}" "${DATE}" "${IP}" "${MESSAGE}"
     local content=$(cat "${HOME_FOLDER}/raid")
     sendMessageToTelegram "${content}"
 fi
