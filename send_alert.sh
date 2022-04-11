@@ -21,12 +21,7 @@
 PROGNAME=${0##*/}
 VERSION="3.5"
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-PLAIN='\033[0m'
-ORANGE='\033[38;5;202m'
-
+# global variable
 DATE=$(date "+%T, %d-%B, %Y")
 HOME_FOLDER="/vinahost"
 Attribute=("HDD Device" "HDD Model" "Temperature" "Highest Temp" "Health" "Performance" "Est. lifetime" "Total written" "Bad sector")
@@ -296,7 +291,31 @@ then
 fi
 }
 
+function checkCable()
+{
+    sata_fail="false"
+    while IFS= read -r line;
+    do
+        case "${line}" in 
+            *"Problems occurred"*)
+                sata_fail="true"
+                ;;
+            *"crash"*)
+                sata_fail="true"   
+                ;;
+            *"blue-screen-of-death"*)
+                sata_fail="true"
+                ;;
+        esac
+    done < "${HOME_FOLDER}/report"
 
+    if [[ "${sata_fail}" == "true" ]]
+    then
+        content=$(grep "Problems occurred\|crash\|blue-screen-of-death" "${HOME_FOLDER}/report")
+        sendMessageToTelegram "${content}"
+    fi
+
+}
 function main() 
 {
     [[ $EUID -ne 0 ]] && sendMessageToTelegram "Error: ${0} must be run as root!" && exit 1
@@ -304,6 +323,7 @@ function main()
     formatData
     checkProblemDisk
     CheckRaid
+    checkCable
     cd "${HOME_FOLDER}" && rm -f sd* report raid &>/dev/null
 }
 main "${@}"
