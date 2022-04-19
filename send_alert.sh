@@ -169,8 +169,7 @@ function sendMessageToTelegram() # gửi nội dung lỗi tới group Telegram -
 {
     local IP=$(curl -s https://ip.vinahost.vn || (hostname -I | awk '{print $1}'))
     local token_id="1126087523:AAG38a7Fm_ZJDey1LXFgdJZLH_WLYpUeWtk"
-    # local group_id="-1001728646671"
-    local group_id="-648195273"
+    local group_id="-1001728646671"
     local -r URL="https://api.telegram.org/bot$token_id/sendMessage"
 
     curl -s -X POST $URL -d chat_id=$group_id -d text="
