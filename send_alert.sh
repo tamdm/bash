@@ -416,8 +416,8 @@ function CheckRaid() # Kiểm tra trạng thái RAID Mdadm và Zpool - nếu l�
 
     if [[ "${ZFS}" -ge 1 ]]
     then
-        condition=$(/sbin/zpool status | egrep -w -i '(DEGRADED|FAULTED|OFFLINE|UNAVAIL|REMOVED|FAIL|DESTROYED|corrupt|cannot|unrecover)')
-        errors=$(/sbin/zpool status | grep ONLINE | grep -v state | awk '{print $3 $4 $5}' | grep -v 000)
+        condition=$(zpool status | egrep -w -i '(DEGRADED|FAULTED|OFFLINE|UNAVAIL|REMOVED|FAIL|DESTROYED|corrupt|cannot|unrecover)')
+        errors=$(zpool status | grep ONLINE | grep -v state | awk '{print $3 $4 $5}' | grep -v 000)
         if [[ "${condition}" || "${errors}" ]] 
         then
             Raid_Failed="true"
