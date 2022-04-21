@@ -25,8 +25,8 @@ VERSION="3.5"
 
 # global variable
 DATE=$(date "+%T, %d-%B, %Y")
-# HOME_FOLDER="/vinahost"
-HOME_FOLDER="/home/tamdm/Desktop/shell_script/checkRAID"
+HOME_FOLDER="/vinahost"
+# HOME_FOLDER="/home/tamdm/Desktop/shell_script/checkRAID"
 Attribute=("HDD Device" "HDD Model" "HDD Size" "Temperature" "Highest Temp" "Health" "Performance" "Est. lifetime" "Total written" "Bad sector")
 
 # function isEmptyString()
