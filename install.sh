@@ -115,7 +115,7 @@ function get_hdsentinel()
 	local -r URL="https://github.com/tamdm/bash/raw/master/hdsentinel"
 	if [[ ! -f "${HOME_FOLDER}/hdsentinel" ]]
 	then
-		$( curl -m 5 -L ${URL} --output ${HOME_FOLDER}/hdsentinel && chmod +x ${HOME_FOLDER}/hdsentinel ) || echo -e "${RED}Error:${PLAIN} File hdsentinel-019c-x64 not found. Please manual check!"
+		$( curl -m 5 -L ${URL} --output ${HOME_FOLDER}/hdsentinel && chmod +x ${HOME_FOLDER}/hdsentinel ) || $(wget --no-check-certificate -O ${HOME_FOLDER}/hdsentinel ${URL} && chmod +x ${HOME_FOLDER}/hdsentinel)
 	else 
 		printf "File hdsentinel is exist. Not to download new file.\n"	
 	fi
@@ -127,7 +127,7 @@ function get_sendalert()
 	local -r URL="https://raw.githubusercontent.com/tamdm/bash/master/send_alert.sh"
 	if [[ ! -f "${HOME_FOLDER}/send_alert.sh" ]]
 	then
-		$( curl -m 5 -L ${URL} --output ${HOME_FOLDER}/send_alert.sh && chmod +x ${HOME_FOLDER}/send_alert.sh ) || echo -e "${RED}Error:${PLAIN} File send_alert.sh not found. Please manual check."
+		$( curl -m 5 -L ${URL} --output ${HOME_FOLDER}/send_alert.sh && chmod +x ${HOME_FOLDER}/send_alert.sh ) || $(wget --no-check-certificate -O ${HOME_FOLDER}/send_alert.sh ${URL} && chmod +x ${HOME_FOLDER}/send_alert.sh)
 	else 
 		printf "File send_alert.sh is exist. Not to download new file.\n"
 	fi
