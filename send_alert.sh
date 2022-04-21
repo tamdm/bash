@@ -25,7 +25,8 @@ VERSION="3.5"
 
 # global variable
 DATE=$(date "+%T, %d-%B, %Y")
-HOME_FOLDER="/vinahost"
+# HOME_FOLDER="/vinahost"
+HOME_FOLDER="/home/tamdm/Desktop/shell_script/checkRAID"
 Attribute=("HDD Device" "HDD Model" "HDD Size" "Temperature" "Highest Temp" "Health" "Performance" "Est. lifetime" "Total written" "Bad sector")
 
 # function isEmptyString()
@@ -163,13 +164,13 @@ function get_hdsentinel()
     fi
 
     cd "${HOME_FOLDER}" && ./hdsentinel > report
-    
 }
 function sendMessageToTelegram() # gửi nội dung lỗi tới group Telegram - call sendMessageToTelegram "${content}" 
 {
     local IP=$(curl -s https://ip.vinahost.vn || (hostname -I | awk '{print $1}'))
     local token_id="1126087523:AAG38a7Fm_ZJDey1LXFgdJZLH_WLYpUeWtk"
-    local group_id="-1001728646671"
+    # local group_id="-1001728646671"
+    local group_id="-648195273"
     local -r URL="https://api.telegram.org/bot$token_id/sendMessage"
 
     curl -s -X POST $URL -d chat_id=$group_id -d text="
@@ -190,30 +191,50 @@ function sendMessageToTelegram() # gửi nội dung lỗi tới group Telegram -
 
 }
 function formatData() # split file report của hdsentinel ra các file text tương ứng với sda, sdb,..., sdn
-{
+{   
+    local -r report="${HOME_FOLDER}/report"
+    local -r num_devices=$(grep "HDD Device" "${report}" | wc -l )
+
+    for (( index=1; index<=${num_devices}; index++ ))
+    do
+        local val="/Est. lifetime/{c++} c==${index}{print NR;exit}"
+        current_line=$(awk "${val}" "${report}") # get current number line của dòng Est. lifetime
+        next_line=$((current_line + 1))
+        val="NR==${next_line}{ print; }"
+        awk "${val}" "${report}" | grep -i "Total written" &>/dev/null # get next line number và tìm string Total written
+        if [[ "${?}" == 1 ]] # nếu không tìm thấy Total written thì chèn 1 dòng tại next line 
+        then
+            val="${next_line} i Total written: 0 (Maybe HDD/USB used)"
+            sed -i "${val}" "${report}"
+        fi
+    done
+
+
     while IFS= read -r line;
     do
         for val in "${Attribute[@]}";
         do
             case "${line}" in 
                 *"${val}"*)
-                    echo "${line}" >> "${HOME_FOLDER}/disk.txt"
+                   echo "${line}" >> "${HOME_FOLDER}/disk"
                 ;;
             esac
         done    
         case "${line}" in 
             *"PERFECT"*)
-                echo "Bad sector   : 0" >> disk.txt
+                echo "Bad sector   : 0" >> "${HOME_FOLDER}/disk" 
             ;;
             *"bad sectors"*)
                 local num=$(echo "$line" | sed 's/[^0-9]*\([0-9]\+\).*/\1/')
-                echo "Bad sector   : "${num}"" >> "${HOME_FOLDER}/disk.txt"
+                echo "Bad sector   : "${num}"" >> "${HOME_FOLDER}/disk"
             ;;
         esac
-    done < "${HOME_FOLDER}/report"
+    done < "${report}"
 
-    cd "${HOME_FOLDER}" && split -l 10 disk.txt -a 1 sd && rm -f "${HOME_FOLDER}/disk.txt"
-    [[ "$(grep "Unknown" ${HOME_FOLDER}/sd* | cut -d":" -f1 | head -n1)" ]] && rm -f "${HOME_FOLDER}/$(grep "Unknown" sd* | cut -d":" -f1 | head -n1)"
+    cd "${HOME_FOLDER}" && split -l 10 disk -a 1 sd 
+    [[ "$(grep -i "Unknown" ${HOME_FOLDER}/sd* | cut -d":" -f1 | head -n1)" ]] && rm -f "${HOME_FOLDER}/$(grep "Unknown" sd* | cut -d":" -f1 | head -n1)"
+    
+
 }
 
 function checkProblemAttribute() # đọc input từ các file sda, sdb ... và get các tham số của ổ cứng
@@ -444,6 +465,6 @@ function main() # hàm main
     checkProblemDisk
     CheckRaid
     checkCable
-    cd "${HOME_FOLDER}" && rm -f sd* report raid &>/dev/null
+    cd "${HOME_FOLDER}" && rm -f sd* report disk raid &>/dev/null
 }
 main "${@}"
