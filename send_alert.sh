@@ -170,7 +170,7 @@ function sendMessageToTelegram() # gửi nội dung lỗi tới group Telegram -
     local IP=$(curl -s https://ip.vinahost.vn || (hostname -I | awk '{print $1}'))
     local token_id="1126087523:AAG38a7Fm_ZJDey1LXFgdJZLH_WLYpUeWtk"
     local group_id="-1001728646671"
-    #local group_id="-648195273"
+    # local group_id="-648195273"
     local -r URL="https://api.telegram.org/bot$token_id/sendMessage"
 
     curl -s -X POST $URL -d chat_id=$group_id -d text="
@@ -417,12 +417,12 @@ function CheckRaid() # Kiểm tra trạng thái RAID Mdadm và Zpool - nếu l�
 
     if [[ "${ZFS}" -ge 1 ]]
     then
-        condition=$( $zpool_val status | egrep -w -i '(DEGRADED|FAULTED|OFFLINE|UNAVAIL|REMOVED|FAIL|DESTROYED|corrupt|cannot|unrecover)')
-        errors=$( $zpool_val status | grep ONLINE | grep -v state | awk '{print $3 $4 $5}' | grep -v 000)
+        condition=$(zpool status | grep -i "DEGRADED\|FAULTED\|OFFLINE|\UNAVAIL\|REMOVED\|FAIL\|DESTROYED\|corrupt\|cannot\|unrecover")
+        errors=$(zpool status | grep ONLINE | grep -v state | awk '{print $3 $4 $5}' | grep -v 000)
         if [[ "${condition}" || "${errors}" ]] 
         then
             Raid_Failed="true"
-            "${zpool_val}" status | tee "${HOME_FOLDER}/raid" &>/dev/null 
+            $zpool_val status >  "${HOME_FOLDER}/raid" 
         fi
     fi
 
