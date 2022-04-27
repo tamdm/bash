@@ -192,7 +192,7 @@ function sendMessageToTelegram() # gửi nội dung lỗi tới group Telegram -
 function formatData() # split file report của hdsentinel ra các file text tương ứng với sda, sdb,..., sdn
 {   
     local -r report="${HOME_FOLDER}/report"
-    local -r num_devices=$(grep "HDD Device" "${report}" | wc -l )
+    local -r num_devices=$(grep -c "HDD Device" "${report}" )
 
     for (( index=1; index<=${num_devices}; index++ ))
     do
