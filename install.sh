@@ -202,7 +202,6 @@ function main() {
 [[ $EUID -ne 0 ]] && echo -e "${RED}Error:${PLAIN} This script must be run as root!" && exit 1
 
 [[ ! -d "/vinahost" ]] && $( mkdir /vinahost )
-[[ ! $(which curl) ]] && $(apt install curl -y || yum install curl -y)
 PS3="Enter your choice number: "
 
 select opt in Show-Distro UpdateOS Install_hdsentinel Install_SendAlert Set_Crond Optimize_Proxmox Exit; do
