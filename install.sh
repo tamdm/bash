@@ -140,13 +140,13 @@ function get_crond()
 	select opt in Opt_1 Opt_2 Exit; do
 	case $opt in 
 		Opt_1)
-			echo -e "Set crontab run every 8 hours: 0 */8 * * * /bin/bash /vinahost/send_alert.sh"
-			read -p "Press Y/y to set cronjob at 8th hours - Press N/n to cancel:" -n 1 -r
+			echo -e "Set crontab run at every 8AM and 20PM: 0 8,20 * * * /bin/bash /vinahost/send_alert.sh"
+			read -p "Press Y/y to set cronjob at every 8AM and 20PM - Press N/n to cancel:" -n 1 -r
 			echo
-			[[ "${REPLY}" =~ ^[Yy]$ ]] && $(( crontab -l ; echo "0 */8 * * * /bin/bash /vinahost/send_alert.sh") | awk '!x[$0]++'| crontab - )
+			[[ "${REPLY}" =~ ^[Yy]$ ]] && $(( crontab -l ; echo "0 8,20 * * * /bin/bash /vinahost/send_alert.sh") | awk '!x[$0]++'| crontab - )
 			;;
 		Opt_2)
-			echo -e "Set crontab run at 6 hours: 0 */6 * * * /bin/bash /vinahost/send_alert.sh"
+			echo -e "Set crontab run every 6 hours: 0 */6 * * * /bin/bash /vinahost/send_alert.sh"
 			read -p "Press Y/y to set cronjob every 6 hours - Press N/n to cancel: " -n 1 -r
 			echo
 			[[ "${REPLY}" =~ ^[Yy]$ ]] && $(( crontab -l ; echo "0 */6 * * * /bin/bash /vinahost/send_alert.sh") | awk '!x[$0]++'| crontab - )
