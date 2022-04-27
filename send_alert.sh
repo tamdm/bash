@@ -169,7 +169,7 @@ function sendMessageToTelegram() # gửi nội dung lỗi tới group Telegram -
     local IP=$(curl -s https://ip.vinahost.vn || (hostname -I | awk '{print $1}'))
     local token_id="1126087523:AAG38a7Fm_ZJDey1LXFgdJZLH_WLYpUeWtk"
     local group_id="-1001728646671"
-    #local group_id="-648195273"
+    # local group_id="-648195273"
     local -r URL="https://api.telegram.org/bot$token_id/sendMessage"
 
     curl -s -X POST $URL -d chat_id=$group_id -d text="
@@ -415,7 +415,7 @@ function CheckRaid() # Kiểm tra trạng thái RAID Mdadm và Zpool - nếu l�
     if [[ "${ZFS}" -ge 1 ]]
     then
         /sbin/zpool status > "${HOME_FOLDER}/raid"
-        condition=$(grep -i "DEGRADED\|FAULTED\|OFFLINE|\UNAVAIL\|REMOVED\|FAIL\|DESTROYED\|corrupt\|cannot\|unrecover" "${HOME_FOLDER}/raid" &>/dev/null)
+        condition=$(grep -i "DEGRADED\|FAULTED\|OFFLINE|\UNAVAIL\|REMOVED\|FAIL\|DESTROYED\|corrupt\|cannot\|unrecover" "${HOME_FOLDER}/raid")
         if [[ "${?}" == 0 ]]
         then
             Raid_Failed="true"
@@ -464,7 +464,7 @@ function main() # hàm main
     get_hdsentinel    
     formatData
     checkProblemDisk
-    CheckRaid  &> "${HOME_FOLDER}/log"
+    CheckRaid  
     checkCable
     cd "${HOME_FOLDER}" && rm -f sd* report disk raid &>/dev/null
 }
