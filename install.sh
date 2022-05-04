@@ -135,12 +135,12 @@ function get_sendalert()
 
 function get_crond()
 {	
-	echo -e "Set running 12h/time(Press 1) - ${PLAIN}Set running 6h/time (Press 2): "
+	echo -e "Set running at 8AM/8PM(Press 1) - ${PLAIN}Set running every 6h (Press 2): "
 	echo -e "Menu setup cronjob"
 	select opt in Opt_1 Opt_2 Exit; do
 	case $opt in 
 		Opt_1)
-			echo -e "Set crontab run at every 8AM and 20PM: 0 8,20 * * * /bin/bash /vinahost/send_alert.sh"
+			echo -e "Set crontab run at every 8AM and 8PM: 0 8,20 * * * /bin/bash /vinahost/send_alert.sh"
 			read -p "Press Y/y to set cronjob at every 8AM and 20PM - Press N/n to cancel:" -n 1 -r
 			echo
 			[[ "${REPLY}" =~ ^[Yy]$ ]] && $(( crontab -l ; echo "0 8,20 * * * /bin/bash /vinahost/send_alert.sh") | awk '!x[$0]++'| crontab - )
