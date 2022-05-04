@@ -179,7 +179,7 @@ function sendMessageToTelegram() # gửi nội dung lỗi tới group Telegram -
     PLEASE CALL ADMIN OR NETWORK FOR CHECK !!!
     
     ###################################### 
-    IP Adress: "${IP}"
+    IP Address: "${IP}"
     ######################################
     
     $(echo "${1}")
