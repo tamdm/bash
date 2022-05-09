@@ -168,8 +168,8 @@ function sendMessageToTelegram() # gửi nội dung lỗi tới group Telegram -
 {
     local IP=$(curl -s https://ip.vinahost.vn || (hostname -I | awk '{print $1}'))
     local token_id="1126087523:AAG38a7Fm_ZJDey1LXFgdJZLH_WLYpUeWtk"
-    local group_id="-1001728646671"
-    # local group_id="-648195273"
+    #local group_id="-1001728646671"
+    local group_id="-648195273"
     local -r URL="https://api.telegram.org/bot$token_id/sendMessage"
 
     curl -s -X POST $URL -d chat_id=$group_id -d text="
@@ -191,7 +191,7 @@ function sendMessageToTelegram() # gửi nội dung lỗi tới group Telegram -
 }
 function formatData() # split file report của hdsentinel ra các file text tương ứng với sda, sdb,..., sdn
 {   
-    local -r report="${HOME_FOLDER}/report"
+    local report="${HOME_FOLDER}/report"
     local -r num_devices=$(grep -c "HDD Device" "${report}" )
 
     for (( index=1; index<=${num_devices}; index++ ))
@@ -230,7 +230,7 @@ function formatData() # split file report của hdsentinel ra các file text tư
         esac
     done < "${report}"
     
-    local -r report="${HOME_FOLDER}/disk"
+    local report="${HOME_FOLDER}/disk"
     for (( index=1; index<=${num_devices}; index++ ))
     do
         local val="/Total written/{c++} c==${index}{print NR;exit}"
