@@ -304,7 +304,10 @@ function checkProblemAttribute() # đọc input từ các file sda, sdb ... và 
 function checkSizeStorage() # convert dung lượng ổ cứng từ MB > GB :D, từ 120GB tới 4TB
 {   
     num_size=$((num_size/1000))
-    if [[ "${num_size}" -le 200 ]]
+    if [[ "${num_size}" -eq 0 ]]
+    then 
+        ssd_size=0
+    elif [[ "${num_size}" -le 200 ]]
     then
         ssd_size=120
     elif [[ "${num_size}" -le 300 ]]
@@ -365,7 +368,10 @@ function checkTBW() # check TBW theo hãng và gửi cảnh báo khi đạt 80% 
 
     if [[ "${brand_SSD}" == "SAMSUNG" ]]
     then
-        if [[ "${ssd_size}" -eq 120  ]]
+        if [[ "${ssd_size}" -eq 0 ]]
+        then
+            threshold=8750
+        elif [[ "${ssd_size}" -eq 120  ]]
         then
             threshold=$((150*80/100 ))
         elif [[ "${ssd_size}" -eq 248 ]]
