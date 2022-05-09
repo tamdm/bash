@@ -468,7 +468,7 @@ function checkCable() # kiểm tra lôi cable bằng hdsentinel, nếu lỗi th�
 
     if [[ "${sata_fail}" == "true" ]]
     then
-        content=$(grep "Problems occurred\|crash\|blue-screen-of-death" "${HOME_FOLDER}/report")
+        content=$(grep "Problems occurred\|crash\|blue-screen-of-death\|data loss" "${HOME_FOLDER}/report")
         sendMessageToTelegram "${content}"
     fi
 
