@@ -229,6 +229,21 @@ function formatData() # split file report của hdsentinel ra các file text tư
             ;;
         esac
     done < "${report}"
+    
+    local -r report="${HOME_FOLDER}/disk"
+    for (( index=1; index<=${num_devices}; index++ ))
+    do
+        local val="/Total written/{c++} c==${index}{print NR;exit}"
+        current_line=$(awk "${val}" "${report}") # get current number line của dòng Total written
+        next_line=$((current_line + 1))
+        val="NR==${next_line}{ print; }"
+        awk "${val}" "${report}" | grep -i "Bad sector" &>/dev/null # get next line number và tìm string Bad sector
+        if [[ "${?}" == 1 ]] # nếu không tìm thấy Bad sector thì chèn 1 dòng tại next line 
+        then
+            val="${next_line} i Bad sector: Not found (But need more check)"
+            sed -i "${val}" "${report}"
+        fi
+    done
 
     cd "${HOME_FOLDER}" && split -l 10 disk -a 1 sd 
     [[ "$(grep -i "Unknown" ${HOME_FOLDER}/sd* | cut -d":" -f1 | head -n1)" ]] && rm -f "${HOME_FOLDER}/$(grep "Unknown" sd* | cut -d":" -f1 | head -n1)"
