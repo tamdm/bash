@@ -173,20 +173,12 @@ function sendMessageToTelegram() # gửi nội dung lỗi tới group Telegram -
     local -r URL="https://api.telegram.org/bot$token_id/sendMessage"
 
     curl -s -X POST $URL -d chat_id=$group_id -d text="
-
-    ########### ALERT MESSAGE ###########
-
-    PLEASE CALL ADMIN OR NETWORK FOR CHECK !!!
+    CẢNH BÁO PHẦN CỨNG 
     
-    ###################################### 
     IP Address: "${IP}"
     ######################################
     
-    $(echo "${1}")
-    
-    ######################################
-    Thời gian: ${DATE}
-    ######################################" > /dev/null
+    $(echo "${1}")" > /dev/null
 
 }
 function formatData() # split file report của hdsentinel ra các file text tương ứng với sda, sdb,..., sdn
@@ -246,7 +238,7 @@ function formatData() # split file report của hdsentinel ra các file text tư
     done
 
     cd "${HOME_FOLDER}" && split -l 10 disk -a 1 sd 
-    [[ "$(grep -i "Unknown" ${HOME_FOLDER}/sd* | cut -d":" -f1 | head -n1)" ]] && rm -f "${HOME_FOLDER}/$(grep "Unknown" sd* | cut -d":" -f1 | head -n1)"
+    #[[ "$(grep -i "Unknown" ${HOME_FOLDER}/sd* | cut -d":" -f1 | head -n1)" ]] && rm -f "${HOME_FOLDER}/$(grep "Unknown" sd* | cut -d":" -f1 | head -n1)"
     
 
 }
