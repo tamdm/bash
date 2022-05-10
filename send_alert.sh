@@ -176,8 +176,6 @@ function sendMessageToTelegram() # gửi nội dung lỗi tới group Telegram -
     CẢNH BÁO PHẦN CỨNG 
     
     IP Address: "${IP}"
-    ######################################
-    
     $(echo "${1}")" > /dev/null
 
 }
