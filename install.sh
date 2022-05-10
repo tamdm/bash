@@ -143,13 +143,13 @@ function get_crond()
 			echo -e "Set crontab run at every 8AM and 8PM: 0 8,20 * * * /bin/bash /vinahost/send_alert.sh"
 			read -p "Press Y/y to set cronjob at every 8AM and 20PM - Press N/n to cancel:" -n 1 -r
 			echo
-			[[ "${REPLY}" =~ ^[Yy]$ ]] && $(( crontab -l ; echo "0 8,20 * * * /bin/bash /vinahost/send_alert.sh") | awk '!x[$0]++'| crontab - )
+			[[ "${REPLY}" =~ ^[Yy]$ ]] && $(( crontab -l ; echo "0 8,20 * * * /bin/bash /vinahost/send_alert.sh &>/dev/null") | awk '!x[$0]++'| crontab - )
 			;;
 		Opt_2)
 			echo -e "Set crontab run every 6 hours: 0 */6 * * * /bin/bash /vinahost/send_alert.sh"
 			read -p "Press Y/y to set cronjob every 6 hours - Press N/n to cancel: " -n 1 -r
 			echo
-			[[ "${REPLY}" =~ ^[Yy]$ ]] && $(( crontab -l ; echo "0 */6 * * * /bin/bash /vinahost/send_alert.sh") | awk '!x[$0]++'| crontab - )
+			[[ "${REPLY}" =~ ^[Yy]$ ]] && $(( crontab -l ; echo "0 */6 * * * /bin/bash /vinahost/send_alert.sh &>/dev/null") | awk '!x[$0]++'| crontab - )
 			;;
 		Exit)
 			printf "Back to main menu ...\n"
