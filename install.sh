@@ -26,6 +26,13 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 PLAIN='\033[0m'
 ORANGE='\033[38;5;202m'
+BANNER="__     __ ___  _   _     _     _   _   ___   ____  _____ __     __ _   _ 
+\ \   / /|_ _|| \ | |   / \   | | | | / _ \ / ___||_   _|\ \   / /| \ | |
+ \ \ / /  | | |  \| |  / _ \  | |_| || | | |\___ \  | |   \ \ / / |  \| |
+  \ V /   | | | |\  | / ___ \ |  _  || |_| | ___) | | | _  \ V /  | |\  |
+   \_/   |___||_| \_|/_/   \_\|_| |_| \___/ |____/  |_|(_)  \_/   |_| \_|
+                                                                         
+"
 
 
 function get_opsy() 
@@ -202,6 +209,7 @@ function main() {
 [[ $EUID -ne 0 ]] && echo -e "${RED}Error:${PLAIN} This script must be run as root!" && exit 1
 
 [[ ! -d "/vinahost" ]] && $( mkdir /vinahost )
+echo "${BANNER}"
 PS3="Enter your choice number: "
 
 select opt in Show-Distro UpdateOS Install_hdsentinel Install_SendAlert Set_Crond Optimize_Proxmox Exit; do
