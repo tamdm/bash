@@ -97,8 +97,6 @@ function Menulist_updateOS()
 				$(( which apt-get || which apt ) &>/dev/null )
 				if [[ $? -eq 0 ]]
 				then
-					# printf "apt-get update -y && apt-get upgrade -y\n"
-					# printf "apt-get install wget -y || apt install wget -y\n"
 					apt-get update -y && apt-get upgrade -y
 					apt-get install wget -y || apt install wget -y
 				else
@@ -145,22 +143,17 @@ function get_sendalert()
 
 function get_crond()
 {	
-	echo -e "Set running at 8AM (Press 1) - ${PLAIN}Set running every 6 hour (Press 2): "
+	echo -e "Set running at 8AM (Press 1) - ${PLAIN}Exit (Press 2): "
 	echo -e "Menu setup cronjob"
-	select opt in Opt_1 Opt_2 Exit; do
+	select opt in Opt_1 Exit; do
 	case $opt in 
 		Opt_1)
-			echo -e "Set crontab run at every 8AM: 0 8 * * 1-6 /bin/bash /vinahost/send_alert.sh"
-			read -p "Press Y/y to set cronjob at every 8AM from Monday to Saturday - Press N/n to cancel:" -n 1 -r
+			echo -e "Set crontab run at every 8AM from Monday to Friday"
+			read -p "Press Y/y to set cronjob - Press N/n to cancel:" -n 1 -r
 			echo
-			[[ "${REPLY}" =~ ^[Yy]$ ]] && $(( crontab -l ; echo "0 8 * * 1-6 /bin/bash /vinahost/send_alert.sh &>/dev/null") | awk '!x[$0]++'| crontab - )
+			[[ "${REPLY}" =~ ^[Yy]$ ]] && $(( crontab -l ; echo "0 8 * * 1-5 /bin/bash /vinahost/send_alert.sh &>/dev/null") | awk '!x[$0]++'| crontab - )
 			;;
-		Opt_2)
-			echo -e "Set crontab run every 6 hours: 0 */6 * * 1-6 /bin/bash /vinahost/send_alert.sh"
-			read -p "Press Y/y to set cronjob every 6 hours from Monday to Saturday - Press N/n to cancel: " -n 1 -r
-			echo
-			[[ "${REPLY}" =~ ^[Yy]$ ]] && $(( crontab -l ; echo "0 */6 * * 1-6 /bin/bash /vinahost/send_alert.sh &>/dev/null") | awk '!x[$0]++'| crontab - )
-			;;
+
 		Exit)
 			printf "Back to main menu ...\n"
 			break
