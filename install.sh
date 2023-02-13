@@ -17,6 +17,7 @@
 
 # Revision history:
 # 2022-03-31	Created
+# 2023-02-13    Add function get_collect()
 # ---------------------------------------------------------------------------
 PROGNAME=${0##*/}
 VERSION="3.5"
