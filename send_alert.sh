@@ -284,7 +284,7 @@ function checkProblemAttribute() # đọc input từ các file sda, sdb ... và 
         trigger_TBW="true"
     fi
 
-    if [[ "${num_temp}" -ge 60 || "${num_health}" -le 50 || "${num_perform}" -le 50 || "${num_lifetime}" -le 100 || "${trigger_TBW}" == "true" || "${num_badsector}" -ge 1 ]] 
+    if [[ "${num_temp}" -ge 60 || "${num_health}" -le 50 || "${num_perform}" -le 50 || "${num_lifetime}" -lt 100 || "${trigger_TBW}" == "true" || "${num_badsector}" -ge 1 ]] 
     then
         local content=$(cat "${HOME_FOLDER}/${1}")
         sendMessageToTelegram "${content}"
