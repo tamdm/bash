@@ -242,10 +242,6 @@ Install_SendAlert)
 	printf "Install SendAlert.sh\n"
 	get_sendalert
 	;;
-Install_Collect)
-	printf "Install collect.sh\n"
-	get_collect
-	;;
 Set_Crond)
 	printf "Set crontab for send_alert.sh\n"
 	get_crond
@@ -256,6 +252,10 @@ Optimize_Proxmox)
 	read -p "Are you sure? [Y/y] to install. Press [N/n] to cancel" -n 1 -r
 	echo
 	[[ ${REPLY} =~ ^[Yy]$ ]] && optimize_proxmox
+	;;
+Install_Collect)
+	printf "Install collect.sh\n"
+	get_collect
 	;;
 Exit)
 	printf "[+] Exit the ${0}... Please wait\n"
