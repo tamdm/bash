@@ -223,7 +223,7 @@ function main() {
 echo "${BANNER}"
 PS3="Enter your choice number: "
 
-select opt in Show-Distro UpdateOS Install_hdsentinel Install_SendAlert Install_Collect Set_Crond Optimize_Proxmox Exit; do
+select opt in Show-Distro UpdateOS Install_hdsentinel Install_SendAlert Set_Crond Optimize_Proxmox Install_Collect Exit; do
 case $opt in 
 
 Show-Distro)
