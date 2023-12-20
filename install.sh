@@ -158,26 +158,29 @@ function get_collect()
 
 function get_crond()
 {	
-	echo -e "Set running at 8AM (Press 1) - ${PLAIN}Exit (Press 2): "
-	echo -e "Menu setup cronjob"
-	select opt in Opt_1 Exit; do
-	case $opt in 
-		Opt_1)
-			echo -e "Set crontab run at every 8AM from Monday to Friday"
-			read -p "Press Y/y to set cronjob - Press N/n to cancel:" -n 1 -r
-			echo
-			[[ "${REPLY}" =~ ^[Yy]$ ]] && $(( crontab -l ; echo "0 8 * * 1-5 /bin/bash /vinahost/send_alert.sh &>/dev/null") | awk '!x[$0]++'| crontab - )
-			;;
+	echo -e "Set cron running at 8AM everyday from Monday to Friday"
+        $((crontab -l ; echo "0 8 * * 1-5 /bin/bash /vinahost/send_alert.sh &>/dev/null") | awk '!x[$0]++'| crontab - )
 
-		Exit)
-			printf "Back to main menu ...\n"
-			break
-			;;
-		*)
-			printf "Invalid option $REPLY\n"
-			;;
-		esac
-		done
+	# echo -e "Set running at 8AM (Press 1) - ${PLAIN}Exit (Press 2): "
+	# echo -e "Menu setup cronjob"
+	# select opt in Opt_1 Exit; do
+	# case $opt in 
+	# 	Opt_1)
+	# 		echo -e "Set crontab run at every 8AM from Monday to Friday"
+	# 		read -p "Press Y/y to set cronjob - Press N/n to cancel:" -n 1 -r
+	# 		echo
+	# 		[[ "${REPLY}" =~ ^[Yy]$ ]] && $(( crontab -l ; echo "0 8 * * 1-5 /bin/bash /vinahost/send_alert.sh &>/dev/null") | awk '!x[$0]++'| crontab - )
+	# 		;;
+
+	# 	Exit)
+	# 		printf "Back to main menu ...\n"
+	# 		break
+	# 		;;
+	# 	*)
+	# 		printf "Invalid option $REPLY\n"
+	# 		;;
+	# 	esac
+	# 	done
 }
 
 function optimize_proxmox() 
