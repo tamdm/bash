@@ -120,7 +120,7 @@ function Menulist_updateOS()
 function get_hdsentinel()
 {
 	local -r HOME_FOLDER="/vinahost"
-	local -r URL="https://files.vinahost.vn/STORAGE/VinaHost_Files/hdsentinel"
+	local -r URL="https://files.vinahost.org/STORAGE/VinaHost_Files/hdsentinel"
 	#local -r URL="https://github.com/tamdm/bash/raw/master/hdsentinel"
 	if [[ ! -f "${HOME_FOLDER}/hdsentinel" ]]
 	then
