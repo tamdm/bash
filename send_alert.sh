@@ -58,16 +58,21 @@ function sendMessageToTelegram() # gửi nội dung lỗi tới group Telegram -
 }
 
 function sendMessageToSlack() {
-    local IP=$(curl -s https://ip.vinahost.vn || (hostname -I | awk '{print $1}'))
-    local webhook_url="https://hooks.slack.com/services/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" # Thay bằng URL thật của bạn
+    local webhook_url="https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX" # Thay bằng webhook thật
+    local IP=$(curl -s https://ip.vinahost.vn || hostname -I | awk '{print $1}')
+    local content="${1}"
 
-    local message="*CẢNH BÁO PHẦN CỨNG* \n\n*IP Address:* ${IP}\n${1}"
+    local payload=$(cat <<EOF
+{
+  "text": "*CẢNH BÁO PHẦN CỨNG*\n\n*IP Address:* ${IP}\n${content}"
+}
+EOF
+)
 
     curl -s -X POST -H 'Content-type: application/json' \
-        --data "{\"text\": \"${message}\"}" \
+        --data "${payload}" \
         "${webhook_url}" > /dev/null
 }
-
 
 function formatData() # split file report của hdsentinel ra các file text tương ứng với sda, sdb,..., sdn
 {   
