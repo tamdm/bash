@@ -58,7 +58,7 @@ function sendMessageToTelegram() # gửi nội dung lỗi tới group Telegram -
 }
 
 function sendMessageToSlack() {
-    local webhook_url="https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX" # Thay bằng webhook thật
+    local webhook_url="https://hooks.slack.com/services/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" # Thay bằng webhook thật
     local IP=$(curl -s https://ip.vinahost.vn || hostname -I | awk '{print $1}')
     local content="${1}"
 
