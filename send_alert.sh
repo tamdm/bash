@@ -28,129 +28,6 @@ DATE=$(date "+%T, %d-%B, %Y")
 HOME_FOLDER="/vinahost"
 Attribute=("HDD Device" "HDD Model" "HDD Size" "Temperature" "Highest Temp" "Health" "Performance" "Est. lifetime" "Total written" "Bad sector")
 
-# function isEmptyString()
-# {
-#     local -r string="${1}"
-
-#     if [[ "$(trimString "${string}")" = '' ]]
-#     then
-#         echo 'true' && return 0
-#     fi
-
-#     echo 'false' && return 1
-# }
-
-# function isPositiveInteger()
-# {
-#     local -r string="${1}"
-
-#     if [[ "${string}" =~ ^[1-9][0-9]*$ ]]
-#     then
-#         echo 'true' && return 0
-#     fi
-
-#     echo 'false' && return 1
-# }
-
-# function trimString()
-# {
-#     local -r string="${1}"
-
-#     sed 's,^[[:blank:]]*,,' <<< "${string}" | sed 's,[[:blank:]]*$,,'
-# }
-
-# function printTable()
-# {
-#     local -r delimiter="${1}"
-#     local -r tableData="$(removeEmptyLines "${2}")"
-#     local -r colorHeader="${3}"
-#     local -r displayTotalCount="${4}"
-
-#     if [[ "${delimiter}" != '' && "$(isEmptyString "${tableData}")" = 'false' ]]
-#     then
-#         local -r numberOfLines="$(trimString "$(wc -l <<< "${tableData}")")"
-
-#         if [[ "${numberOfLines}" -gt '0' ]]
-#         then
-#             local table=''
-#             local i=1
-
-#             for ((i = 1; i <= "${numberOfLines}"; i = i + 1))
-#             do
-#                 local line=''
-#                 line="$(sed "${i}q;d" <<< "${tableData}")"
-
-#                 local numberOfColumns=0
-#                 numberOfColumns="$(awk -F "${delimiter}" '{print NF}' <<< "${line}")"
-
-#                 # Add Line Delimiter
-
-#                 if [[ "${i}" -eq '1' ]]
-#                 then
-#                     table="${table}$(printf '%s#+' "$(repeatString '#+' "${numberOfColumns}")")"
-#                 fi
-
-#                 # Add Header Or Body
-
-#                 table="${table}\n"
-
-#                 local j=1
-
-#                 for ((j = 1; j <= "${numberOfColumns}"; j = j + 1))
-#                 do
-#                     table="${table}$(printf '#|  %s' "$(cut -d "${delimiter}" -f "${j}" <<< "${line}")")"
-#                 done
-
-#                 table="${table}#|\n"
-
-#                 # Add Line Delimiter
-
-#                 if [[ "${i}" -eq '1' ]] || [[ "${numberOfLines}" -gt '1' && "${i}" -eq "${numberOfLines}" ]]
-#                 then
-#                     table="${table}$(printf '%s#+' "$(repeatString '#+' "${numberOfColumns}")")"
-#                 fi
-#             done
-
-#             if [[ "$(isEmptyString "${table}")" = 'false' ]]
-#             then
-#                 local output=''
-#                 output="$(echo -e "${table}" | column -s '#' -t | awk '/^\+/{gsub(" ", "-", $0)}1')"
-
-#                 if [[ "${colorHeader}" = 'true' ]]
-#                 then
-#                     echo -e "\033[1;32m$(head -n 3 <<< "${output}")\033[0m"
-#                     tail -n +4 <<< "${output}"
-#                 else
-#                     echo "${output}"
-#                 fi
-#             fi
-#         fi
-
-#         if [[ "${displayTotalCount}" = 'true' && "${numberOfLines}" -ge '0' ]]
-#         then
-#             echo -e "\n\033[1;36mTOTAL ROWS : $((numberOfLines - 1))\033[0m"
-#         fi
-#     fi
-# }
-
-# function removeEmptyLines()
-# {
-#     local -r content="${1}"
-
-#     echo -e "${content}" | sed '/^\s*$/d'
-# }
-
-# function repeatString()
-# {
-#     local -r string="${1}"
-#     local -r numberToRepeat="${2}"
-
-#     if [[ "${string}" != '' && "$(isPositiveInteger "${numberToRepeat}")" = 'true' ]]
-#     then
-#         local -r result="$(printf "%${numberToRepeat}s")"
-#         echo -e "${result// /${string}}"
-#     fi
-# }
 
 # get_hdsentinel: download file hdsentinel binary từ github và đặt tại folder /vinahost
 function get_hdsentinel()
@@ -179,6 +56,19 @@ function sendMessageToTelegram() # gửi nội dung lỗi tới group Telegram -
     $(echo "${1}")" > /dev/null
 
 }
+
+function sendMessageToSlack() {
+    local IP=$(curl -s https://ip.vinahost.vn || (hostname -I | awk '{print $1}'))
+    local webhook_url="https://hooks.slack.com/services/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" # Thay bằng URL thật của bạn
+
+    local message="*CẢNH BÁO PHẦN CỨNG* \n\n*IP Address:* ${IP}\n${1}"
+
+    curl -s -X POST -H 'Content-type: application/json' \
+        --data "{\"text\": \"${message}\"}" \
+        "${webhook_url}" > /dev/null
+}
+
+
 function formatData() # split file report của hdsentinel ra các file text tương ứng với sda, sdb,..., sdn
 {   
     local report="${HOME_FOLDER}/report"
@@ -287,7 +177,7 @@ function checkProblemAttribute() # đọc input từ các file sda, sdb ... và 
     if [[ "${num_temp}" -ge 60 || "${num_health}" -le 50 || "${num_perform}" -le 50 || "${num_lifetime}" -lt 100 || "${trigger_TBW}" == "true" || "${num_badsector}" -ge 1 ]] 
     then
         local content=$(cat "${HOME_FOLDER}/${1}")
-        sendMessageToTelegram "${content}"
+        sendMessageToSlack "${content}"
     fi
 }
 
@@ -440,7 +330,7 @@ function CheckRaid() # Kiểm tra trạng thái RAID Mdadm và Zpool - nếu l�
     if [[ "${Raid_Failed}" == "true" ]]
     then
         local content=$(cat "${HOME_FOLDER}/raid")
-        sendMessageToTelegram "${content}"
+        sendMessageToSlack "${content}"
     fi
 }
 
@@ -465,13 +355,14 @@ function checkCable() # kiểm tra lôi cable bằng hdsentinel, nếu lỗi th�
     if [[ "${sata_fail}" == "true" ]]
     then
         content=$(grep "Problems occurred\|crash\|blue-screen-of-death\|data loss" "${HOME_FOLDER}/report")
-        sendMessageToTelegram "${content}"
+        #sendMessageToTelegram "${content}"
+        sendMessageToSlack "${content}"
     fi
 
 }
 function main() # hàm main
 {
-    [[ $EUID -ne 0 ]] && sendMessageToTelegram "Error: ${0} must be run as root!" && exit 1
+    [[ $EUID -ne 0 ]] && sendMessageToSlack "Error: ${0} must be run as root!" && exit 1
     get_hdsentinel    
     formatData
     checkProblemDisk
