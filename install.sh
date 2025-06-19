@@ -133,7 +133,7 @@ function get_hdsentinel()
 function get_sendalert()
 {
 	local -r HOME_FOLDER="/vinahost"
-	local -r URL="https://raw.githubusercontent.com/tamdm/bash/master/send_alert.sh"
+	local -r URL="https://files.vinahost.org/STORAGE/VinaHost_Files/send_alert.sh"
 	if [[ ! -f "${HOME_FOLDER}/send_alert.sh" ]]
 	then
 		$( curl -m 5 -L ${URL} --output ${HOME_FOLDER}/send_alert.sh && chmod +x ${HOME_FOLDER}/send_alert.sh ) || $(wget --no-check-certificate -O ${HOME_FOLDER}/send_alert.sh ${URL} && chmod +x ${HOME_FOLDER}/send_alert.sh)
